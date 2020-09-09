@@ -28,4 +28,18 @@ io.on('connection', (socket) => {
     socket.on('disconnecting', (reason) => {
         console.log('Disconnect : ' + socket.id);
     });
+
+    socket.on('newMessageToServer', (message) => {
+        console.log(message);
+        //io.of('/').emit('messageToClients', {text: message.text});
+        io.emit('messageToClients', {text: message.text});
+    });
+
+    io.of('/admin').emit('welcome', 'Welcome admin emit');
+
 })
+
+io.of('/admin').on('connection', (socket) => {
+    console.log("Someone connected to the admin");
+    io.of('/admin').emit('welcome', "Welcome message!!");
+});
